@@ -1,0 +1,13 @@
+:root { font-family: "Inter", system-ui, sans-serif; color: #322e27; background: #f6f4ed; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+header { padding: 24px 6vw; border-bottom: 1px solid #d9d5ca; font: 600 23px Georgia, serif; }
+header span { color: #6b665d; font: 14px monospace; }
+main { max-width: 1150px; padding: clamp(42px, 8vw, 106px) 6vw; margin: auto; }
+h1 { margin: 0; font: 500 clamp(44px, 7vw, 86px)/1.2 "Songti SC", serif; }
+p { color: #615c53; line-height: 1.7; }
+ul { list-style: none; padding: 0; margin: 40px 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+li div { height: clamp(125px, 19vw, 245px); background: var(--color); border-radius: 42% 42% 3px 3px; }
+h2 { font: 500 21px "Songti SC", serif; margin: 14px 0 6px; }
+code { color: #575249; user-select: all; }
+@media (max-width: 620px) { ul { grid-template-columns: repeat(2, 1fr); gap: 24px 14px; } }
