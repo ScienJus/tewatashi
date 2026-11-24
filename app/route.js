@@ -42,12 +42,12 @@ export async function POST(request) {
   const action = form.get('action')
   const redirect = new NextResponse(null, { status: 303, headers: { Location: '/', 'Cache-Control': 'no-store' } })
   if (action === 'login') {
-    if (!acceptsAdminToken(form.get('token'))) return render({ message: 'Admin token 无效。' }, 401)
+    if (!acceptsAdminToken(form.get('token'))) return render({ message: 'Invalid admin token.' }, 401)
     redirect.headers.set('Location', projectReturnPath(request))
     redirect.cookies.set(adminCookie, issueAdminSession(), cookieOptions('/', 8 * 3600))
     return redirect
   }
-  if (!isAdmin(request.cookies.get(adminCookie)?.value)) return render({ message: '请先登录。' }, 403)
+  if (!isAdmin(request.cookies.get(adminCookie)?.value)) return render({ message: 'Please sign in first.' }, 403)
   if (action === 'logout') {
     redirect.cookies.set(adminCookie, '', cookieOptions('/', 0))
     return redirect
@@ -56,7 +56,7 @@ export async function POST(request) {
   const days = form.get('days')
   const available = projects()
   if (action !== 'share' || !available.includes(project) || !['1', '7', '30'].includes(days)) {
-    return render({ projects: available, message: '请选择有效的项目和期限。' }, 400)
+    return render({ projects: available, message: 'Choose a valid project and link duration.' }, 400)
   }
   return render({ projects: available, result: issueShare(project, Number(days) * 86400) })
 }

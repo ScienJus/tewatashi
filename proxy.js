@@ -8,7 +8,7 @@ export function proxy(request) {
   if (path === '/') return NextResponse.next()
 
   const project = path.split('/')[1]
-  if (!projects().includes(project)) return new Response('项目不存在', { status: 404 })
+  if (!projects().includes(project)) return new Response('Project not found.', { status: 404 })
   if (!['GET', 'HEAD'].includes(request.method)) return new Response(null, { status: 405, headers: { Allow: 'GET, HEAD' } })
 
   // Reject ambiguous separators before the static file server decodes the URL.
@@ -51,7 +51,7 @@ export function proxy(request) {
   const destination = request.headers.get('sec-fetch-dest')
   const pageRequest = destination ? destination === 'document' :
     request.headers.get('accept')?.includes('text/html') || /(?:\/|\.html?)$/i.test(path)
-  if (!pageRequest) return new Response('需要项目访问权限。', { status: 403 })
+  if (!pageRequest) return new Response('You need permission to access this project.', { status: 403 })
 
   const login = new URL('/', url)
   login.searchParams.set('next', path + url.search)
@@ -60,11 +60,11 @@ export function proxy(request) {
 
 function accessError(status) {
   const messages = {
-    invalid: '访问凭据无效。',
-    expired: '访问凭据已到期。',
-    revoked: '分享链接已被撤销。'
+    invalid: 'Your access credential is invalid.',
+    expired: 'Your access credential has expired.',
+    revoked: 'This share link has been revoked.'
   }
-  return new Response(messages[status] + '请联系作者获取新的访问链接。', {
+  return new Response(messages[status] + ' Contact the author for a new share link.', {
     status: 403,
     headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'private, no-store', 'Referrer-Policy': 'no-referrer' }
   })
